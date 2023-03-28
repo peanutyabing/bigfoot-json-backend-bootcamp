@@ -12,8 +12,10 @@ const sightingsRouter = new SightingsRouter(sightingsController, express);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use("/sightings", sightingsRouter.route());
+app.use("/", (req, res) => {
+  res.send("Incorrect path. Please check the URL.");
+});
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
