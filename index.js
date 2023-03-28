@@ -1,26 +1,19 @@
 const express = require("express");
-const { getSightings } = require("./utils.js");
 require("dotenv").config();
+const app = express();
+const PORT = process.env.PORT;
 const cors = require("cors");
 
-const PORT = process.env.PORT;
-const app = express();
+const SightingsController = require("./controllers/SightingsController.js");
+const sightingsController = new SightingsController();
+const SightingsRouter = require("./routers/SightingsRouter.js");
+const sightingsRouter = new SightingsRouter(sightingsController, express);
+
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
-
-app.get("/sightings", async (req, res) => {
-  const sightings = await getSightings();
-  res.json(sightings);
-});
-
-app.get("/sightings/:sightingIndex", async (req, res) => {
-  const index = parseInt(req.params.sightingIndex);
-  const sighting = (await getSightings())[index];
-  res.json(sighting);
-});
+app.use("/sightings", sightingsRouter.route());
 
 app.listen(PORT, () => {
   console.log(`Express app listening on port ${PORT}!`);
