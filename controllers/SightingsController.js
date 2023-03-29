@@ -13,14 +13,12 @@ class SightingsController {
   };
 
   filterSightings = (queryParams, dataToFilter) => {
-    console.log(queryParams);
-    let output = dataToFilter;
     for (let key in queryParams) {
-      output = output.filter((datum) => datum[key] === queryParams[key]);
-      console.log(key, queryParams[key]);
-      console.log(output);
+      dataToFilter = dataToFilter.filter(
+        (datum) => datum[key] === queryParams[key]
+      );
     }
-    return output;
+    return dataToFilter;
   };
 
   showSighting = async (req, res) => {
